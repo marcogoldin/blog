@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | Data Clutter</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary" />
+<meta property="og:description" content="summary" />
+<link rel="canonical" href="https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html" />
+<meta property="og:url" content="https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html" />
+<meta property="og:site_name" content="Data Clutter" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-11T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html"},"description":"summary","@type":"BlogPosting","url":"https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html","headline":"Title","dateModified":"2020-03-11T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://marcogoldin.github.io/blog/feed.xml" title="Data Clutter" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | Data Clutter</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary" />
+<meta property="og:description" content="summary" />
+<link rel="canonical" href="https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html" />
+<meta property="og:url" content="https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html" />
+<meta property="og:site_name" content="Data Clutter" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-11T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html"},"description":"summary","@type":"BlogPosting","url":"https://marcogoldin.github.io/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html","headline":"Title","dateModified":"2020-03-11T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://marcogoldin.github.io/blog/feed.xml" title="Data Clutter" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Data Clutter</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="page-description">summary</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-11T00:00:00-05:00" itemprop="datePublished">
+        Mar 11, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/marcogoldin/blog/tree/master/_notebooks/2020-03-11-download-open-data-biblioteche-roma-con-python-selenium.ipynb" role="button">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div><div class="px-2">
+    <a href="https://colab.research.google.com/github/marcogoldin/blog/blob/master/_notebooks/2020-03-11-download-open-data-biblioteche-roma-con-python-selenium.ipynb">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-03-11-download-open-data-biblioteche-roma-con-python-selenium.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Open-Data-Biblioteche-di-Roma">Open Data Biblioteche di Roma<a class="anchor-link" href="#Open-Data-Biblioteche-di-Roma"> </a></h1><h2 id="--download-automatico-dei-csv-mensili-con-python-e-selenium">- download automatico dei csv mensili con python e selenium<a class="anchor-link" href="#--download-automatico-dei-csv-mensili-con-python-e-selenium"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://media1.giphy.com/media/3o7TKSx0g7RqRniGFG/giphy.gif" alt="Let&#39;s Scrape!" /></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Selenium">Selenium<a class="anchor-link" href="#Selenium"> </a></h1>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.select</span> <span class="kn">import</span> <span class="n">Select</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.firefox.options</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">selenium.common</span> <span class="kn">import</span> <span class="n">exceptions</span>
+<span class="n">opts</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+
+<span class="c1">#facoltativo in ambiente desktop (obbligatorio nel caso di script lato server)</span>
+<span class="c1">#opts.headless = True </span>
+
+<span class="n">profile</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxProfile</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.privatebrowsing.autostart&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="c1">#profile.set_preference(&quot;permissions.default.image&quot;, 2) #facoltativo</span>
+
+<span class="c1"># il driver gecko si scarica qui: https://github.com/mozilla/geckodriver/releases/tag/v0.24.0</span>
+<span class="c1"># inizializzare il driver specificando come sempre la posizione del geckodriver nel proprio pc/server</span>
+<span class="n">driver</span> <span class="o">=</span> <span class="p">(</span>
+<span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span>
+    <span class="n">executable_path</span><span class="o">=</span><span class="s1">&#39;/path-to/geckodriver&#39;</span><span class="p">,</span>
+    <span class="n">firefox_profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">opts</span><span class="p">))</span>
+
+<span class="n">wait_explicit</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Definire-la-cartella-che-conterr&#224;-le-sotto-cartelle-con-i-singoli-csv-mensili">Definire la cartella che conterr&#224; le sotto-cartelle con i singoli csv mensili<a class="anchor-link" href="#Definire-la-cartella-che-conterr&#224;-le-sotto-cartelle-con-i-singoli-csv-mensili"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># es.: &#39;/path-to/csv_prestiti_mensili&#39;</span>
+<span class="n">folder_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Scraping">Scraping<a class="anchor-link" href="#Scraping"> </a></h2><h3 id="link-alla-pagina-con-i-csv-mensili:-https://www.bibliotechediroma.it/opendata?path=DET_P_MESEPREC">link alla pagina con i csv mensili: <a href="https://www.bibliotechediroma.it/opendata?path=DET_P_MESEPREC">https://www.bibliotechediroma.it/opendata?path=DET_P_MESEPREC</a><a class="anchor-link" href="#link-alla-pagina-con-i-csv-mensili:-https://www.bibliotechediroma.it/opendata?path=DET_P_MESEPREC"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.bibliotechediroma.it/opendata?path=DET_P_MESEPREC&#39;</span><span class="p">)</span>
+<span class="n">wait_explicit</span><span class="o">.</span><span class="n">until</span><span class="p">(</span>
+            <span class="n">EC</span><span class="o">.</span><span class="n">presence_of_element_located</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="s1">&#39;//*[@id=&quot;block-bibliotu-content&quot;]/article/ul&#39;</span><span class="p">)))</span>
+
+<span class="n">corpo_article</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span>
+    <span class="s1">&#39;//*[@id=&quot;block-bibliotu-content&quot;]/article/ul&#39;</span><span class="p">)</span>
+
+<span class="n">blocchi</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">corpo_article</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;block-bibliotu-content&quot;]/article/ul/li&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">list_all</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blocchi</span><span class="p">)):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">blocchi</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;block-bibliotu-content&quot;]/article/ul/li&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">pos</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;/ul&#39;</span><span class="p">)</span>
+    <span class="n">li</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">find_elements_by_tag_name</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">elem</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">li</span><span class="p">]</span>
+    <span class="n">csv</span> <span class="o">=</span> <span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;csv&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">list_all</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">data</span><span class="p">,</span><span class="n">csv</span><span class="p">])</span> <span class="c1"># lista contenente la data (anno,mese) e tutti gli url per il download di ogni singolo csv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Download-dei-csv,-ciascuno-in-una-cartella-separata">Download dei csv, ciascuno in una cartella separata<a class="anchor-link" href="#Download-dei-csv,-ciascuno-in-una-cartella-separata"> </a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="--i-csv-vengono-rinominati-automaticamente-con-anno-e-mese">- i csv vengono rinominati automaticamente con anno e mese<a class="anchor-link" href="#--i-csv-vengono-rinominati-automaticamente-con-anno-e-mese"> </a></h3><h3 id="--in-questo-modo-sar&#224;-pi&#249;-semplice-gestire-successivamente-l'aggregazione-dei-file-o-eventuali-slice-nelle-singole-sottocartelle...">- in questo modo sar&#224; pi&#249; semplice gestire successivamente l'aggregazione dei file o eventuali slice nelle singole sottocartelle...<a class="anchor-link" href="#--in-questo-modo-sar&#224;-pi&#249;-semplice-gestire-successivamente-l'aggregazione-dei-file-o-eventuali-slice-nelle-singole-sottocartelle..."> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">list_all</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cartella: </span><span class="si">{</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;wget&#39;</span><span class="p">,</span><span class="s1">&#39;-P&#39;</span><span class="p">,</span><span class="n">folder</span><span class="p">,</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span><span class="s1">&#39;DET_P_MESEPREC_01.csv&#39;</span><span class="p">),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span><span class="n">list_all</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span> <span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>cartella: 201707
+cartella: 201708
+cartella: 201709
+cartella: 201710
+cartella: 201711
+cartella: 201801
+cartella: 201802
+cartella: 201803
+cartella: 201804
+cartella: 201805
+cartella: 201806
+cartella: 201807
+cartella: 201808
+cartella: 201809
+cartella: 201810
+cartella: 201811
+cartella: 201812
+cartella: 201901
+cartella: 201902
+cartella: 201903
+cartella: 201904
+cartella: 201905
+cartella: 201906
+cartella: 201907
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># chiudere il driver Selenium</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description" open="">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p><div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#collapse_show</span>
+<span class="n">csv_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span>
+    <span class="n">folder_path</span><span class="o">+</span><span class="s1">&#39;/**/*.csv&#39;</span><span class="p">,</span>
+    <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">*** Lista con elenco di tutti i file ***</span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">csv_files</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+</p>
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+*** Lista con elenco di tutti i file ***
+
+ [&#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201708/201708.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201907/201907.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201707/201707.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201709/201709.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201906/201906.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201901/201901.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201811/201811.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201810/201810.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201803/201803.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201804/201804.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201805/201805.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201802/201802.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201904/201904.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201903/201903.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201902/201902.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201905/201905.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201812/201812.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201809/201809.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201807/201807.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201801/201801.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201806/201806.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201808/201808.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201710/201710.csv&#39;, &#39;/Users/marcogoldin/Documents/WebDev/Data_Science/OpenDataBiblioTu/prova_selenium_csv_github/201711/201711.csv&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="voil&#224;...">voil&#224;...<a class="anchor-link" href="#voil&#224;..."> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://media3.giphy.com/media/82LD2CCLiR1Epx2xOv/giphy.gif" alt="Neato!" /></p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/blog/2020/03/11/download-open-data-biblioteche-roma-con-python-selenium.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>chiacchiere di dati.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/marcogoldin" title="marcogoldin"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/inmediaref" title="inmediaref"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
